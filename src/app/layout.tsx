@@ -19,6 +19,12 @@ export const metadata: Metadata = {
   description: "A powerful AI chat application with multiple models, web search, voice input, and more. Built by Nitij.",
   keywords: ["AI", "Chat", "Assistant", "LLM", "Nexus", "Artificial Intelligence"],
   authors: [{ name: "Nitij" }],
+  icons: {
+    icon: [
+      { url: "/nexus-logo.svg", type: "image/svg+xml" },
+    ],
+    apple: "/nexus-logo.svg",
+  },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#grad1)" opacity="0.15"/>
+  <circle cx="50" cy="50" r="45" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Neural network nodes -->
+  <circle cx="50" cy="25" r="6" fill="url(#grad2)" filter="url(#glow)"/>
+  <circle cx="25" cy="50" r="6" fill="url(#grad2)" filter="url(#glow)"/>
+  <circle cx="75" cy="50" r="6" fill="url(#grad2)" filter="url(#glow)"/>
+  <circle cx="35" cy="75" r="6" fill="url(#grad2)" filter="url(#glow)"/>
+  <circle cx="65" cy="75" r="6" fill="url(#grad2)" filter="url(#glow)"/>
+  
+  <!-- Central brain/AI core -->
+  <circle cx="50" cy="50" r="14" fill="url(#grad1)" filter="url(#glow)"/>
+  <circle cx="50" cy="50" r="10" fill="#0a0a0a"/>
+  <circle cx="50" cy="50" r="6" fill="url(#grad2)"/>
+  
+  <!-- Neural connections -->
+  <line x1="50" y1="25" x2="50" y2="36" stroke="url(#grad2)" stroke-width="2" opacity="0.8"/>
+  <line x1="25" y1="50" x2="36" y2="50" stroke="url(#grad2)" stroke-width="2" opacity="0.8"/>
+  <line x1="75" y1="50" x2="64" y2="50" stroke="url(#grad2)" stroke-width="2" opacity="0.8"/>
+  <line x1="35" y1="75" x2="42" y2="62" stroke="url(#grad2)" stroke-width="2" opacity="0.8"/>
+  <line x1="65" y1="75" x2="58" y2="62" stroke="url(#grad2)" stroke-width="2" opacity="0.8"/>
+  
+  <!-- Outer connection arcs -->
+  <path d="M 50 25 Q 75 25 75 50" fill="none" stroke="url(#grad1)" stroke-width="1.5" opacity="0.4"/>
+  <path d="M 50 25 Q 25 25 25 50" fill="none" stroke="url(#grad1)" stroke-width="1.5" opacity="0.4"/>
+  <path d="M 25 50 Q 25 75 35 75" fill="none" stroke="url(#grad1)" stroke-width="1.5" opacity="0.4"/>
+  <path d="M 75 50 Q 75 75 65 75" fill="none" stroke="url(#grad1)" stroke-width="1.5" opacity="0.4"/>
+  <path d="M 35 75 Q 50 85 65 75" fill="none" stroke="url(#grad1)" stroke-width="1.5" opacity="0.4"/>
+</svg>

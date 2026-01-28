@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { 
   ChevronDown, 
   Zap, 
   Brain, 
   Sparkles,
   Check,
-  Rocket
+  Rocket,
+  Lock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -45,11 +45,14 @@ const providerColors: Record<string, string> = {
 };
 
 const providerLabels: Record<string, string> = {
-  fireworks: 'Fireworks AI',
+  fireworks: 'Fireworks AI (Coming Soon)',
   groq: 'Groq (Ultra Fast)',
-  google: 'Google AI',
-  openrouter: 'OpenRouter',
+  google: 'Google AI (Coming Soon)',
+  openrouter: 'OpenRouter (Coming Soon)',
 };
+
+// Only Groq is currently active
+const activeProviders = ['groq'];
 
 export function ModelSelector({ selectedModelId, onSelectModel }: ModelSelectorProps) {
   const [open, setOpen] = useState(false);
@@ -57,7 +60,8 @@ export function ModelSelector({ selectedModelId, onSelectModel }: ModelSelectorP
   const selectedModel = AI_MODELS.find(m => m.id === selectedModelId) || AI_MODELS[0];
   const Icon = providerIcons[selectedModel.provider];
 
-  const providers = ['fireworks', 'groq', 'google', 'openrouter'];
+  // Groq first, then others
+  const providers = ['groq', 'google', 'openrouter', 'fireworks'];
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -84,40 +88,56 @@ export function ModelSelector({ selectedModelId, onSelectModel }: ModelSelectorP
           if (models.length === 0) return null;
           
           const ProviderIcon = providerIcons[provider];
+          const isActive = activeProviders.includes(provider);
           
           return (
             <div key={provider}>
-              <DropdownMenuLabel className="flex items-center gap-2">
+              <DropdownMenuLabel className={cn(
+                "flex items-center gap-2",
+                !isActive && "opacity-50"
+              )}>
                 <ProviderIcon className={cn("h-4 w-4", providerColors[provider])} />
                 {providerLabels[provider]}
+                {!isActive && <Lock className="h-3 w-3 ml-auto" />}
               </DropdownMenuLabel>
               <DropdownMenuGroup>
                 {models.map((model) => (
                   <DropdownMenuItem
                     key={model.id}
                     onClick={() => {
-                      onSelectModel(model);
-                      setOpen(false);
+                      if (isActive) {
+                        onSelectModel(model);
+                        setOpen(false);
+                      }
                     }}
-                    className="flex items-start gap-3 py-2 cursor-pointer"
+                    disabled={!isActive}
+                    className={cn(
+                      "flex items-start gap-3 py-2",
+                      isActive ? "cursor-pointer" : "cursor-not-allowed opacity-40"
+                    )}
                   >
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{model.name}</span>
-                        {model.speed === 'fast' && (
+                        {isActive && model.speed === 'fast' && (
                           <Badge variant="secondary" className="h-5 text-[10px] gap-1">
                             <Zap className="h-2.5 w-2.5 fill-current" />
                             Fast
                           </Badge>
                         )}
-                        {selectedModelId === model.id && (
+                        {!isActive && (
+                          <Badge variant="outline" className="h-5 text-[10px] opacity-60">
+                            Coming Soon
+                          </Badge>
+                        )}
+                        {isActive && selectedModelId === model.id && (
                           <Check className="h-4 w-4 text-primary ml-auto" />
                         )}
                       </div>
                       <p className="text-xs text-muted-foreground line-clamp-1">
                         {model.description}
                       </p>
-                      {model.capabilities && (
+                      {isActive && model.capabilities && (
                         <div className="flex gap-1 flex-wrap">
                           {model.capabilities.map((cap) => (
                             <span
