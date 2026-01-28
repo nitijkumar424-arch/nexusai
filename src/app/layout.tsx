@@ -20,10 +20,8 @@ export const metadata: Metadata = {
   keywords: ["AI", "Chat", "Assistant", "LLM", "Nexus", "Artificial Intelligence"],
   authors: [{ name: "Nitij" }],
   icons: {
-    icon: [
-      { url: "/nexus-logo.svg", type: "image/svg+xml" },
-    ],
-    apple: "/nexus-logo.svg",
+    icon: "/favicon.png",
+    apple: "/favicon.png",
   },
   manifest: "/manifest.json",
   appleWebApp: {
