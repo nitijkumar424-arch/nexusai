@@ -2,10 +2,14 @@
   <img src="https://img.icons8.com/fluency/96/artificial-intelligence.png" alt="Nexus AI Logo" width="96" height="96">
 </p>
 
-<h1 align="center">🚀 Nexus AI</h1>
+<h1 align="center">NEXUS AI</h1>
 
 <p align="center">
   <strong>A next-generation AI chat platform with multi-model support, real-time web search, and intelligent personas</strong>
+</p>
+
+<p align="center">
+  <a href="https://nexusai-mauve.vercel.app/" target="_blank"><img src="https://img.shields.io/badge/LIVE%20DEMO-Visit%20Now-6366f1?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo"></a>
 </p>
 
 <p align="center">
@@ -18,7 +22,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Next.js-16.1.6-black?style=for-the-badge&logo=next.js" alt="Next.js">
+  <img src="https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js" alt="Next.js">
   <img src="https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript" alt="TypeScript">
   <img src="https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind">
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react" alt="React">
@@ -114,7 +118,10 @@ Developer-friendly features:
 
 ---
 
-## 🎬 Demo
+## Demo
+
+### Live Application
+**[https://nexusai-mauve.vercel.app/](https://nexusai-mauve.vercel.app/)**
 
 ### Main Chat Interface
 ```
