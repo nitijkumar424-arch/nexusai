@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.icons8.com/fluency/96/artificial-intelligence.png" alt="Nexus AI Logo" width="96" height="96">
+  <img src="https://raw.githubusercontent.com/nitijkumar424-arch/nexusai/main/public/logo.png" alt="Nexus AI Logo" width="200">
 </p>
 
 <h1 align="center">NEXUS AI</h1>
