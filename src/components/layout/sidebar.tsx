@@ -10,9 +10,11 @@ import {
   ChevronLeft,
   Search,
   Sparkles,
-  Clock
+  Clock,
+  ShoppingBag
 } from 'lucide-react';
 import { format, isToday, isYesterday, isThisWeek, isThisMonth } from 'date-fns';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -196,7 +198,16 @@ export function Sidebar({ onOpenSettings }: SidebarProps) {
         </ScrollArea>
 
         {/* Footer */}
-        <div className="p-3 border-t">
+        <div className="p-3 border-t space-y-1">
+          <Link href="/recommendations">
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-2"
+            >
+              <ShoppingBag className="h-4 w-4" />
+              Recommendations
+            </Button>
+          </Link>
           <Button
             variant="ghost"
             className="w-full justify-start gap-2"
