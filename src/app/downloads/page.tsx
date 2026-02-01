@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   FileText, 
@@ -9,17 +10,34 @@ import {
   Download,
   ArrowLeft,
   Star,
-  Eye,
   FileCode,
   Palette,
   BookOpen,
   Layout,
   Terminal,
-  Smartphone
+  Smartphone,
+  X,
+  Copy,
+  Check,
+  ExternalLink
 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+
+interface FormatOption {
+  format: string;
+  label: string;
+  icon: string;
+  url: string;
+}
 
 interface DownloadItem {
   id: string;
@@ -29,8 +47,7 @@ interface DownloadItem {
   fileSize: string;
   downloads: number;
   icon: typeof FileText;
-  downloadUrl: string;
-  previewUrl?: string;
+  formats: FormatOption[];
   tags: string[];
   featured?: boolean;
 }
@@ -45,7 +62,11 @@ const downloads: DownloadItem[] = [
     fileSize: '245 KB',
     downloads: 2450,
     icon: FileText,
-    downloadUrl: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs',
+    formats: [
+      { format: 'pdf', label: 'PDF Document', icon: '📄', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'docx', label: 'Word Document', icon: '📝', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'google', label: 'Google Docs', icon: '📋', url: 'https://docs.google.com/document/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/copy' }
+    ],
     tags: ['Resume', 'Career', 'Template'],
     featured: true
   },
@@ -57,7 +78,10 @@ const downloads: DownloadItem[] = [
     fileSize: '1.2 MB',
     downloads: 5820,
     icon: BookOpen,
-    downloadUrl: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs',
+    formats: [
+      { format: 'pdf', label: 'PDF Document', icon: '📄', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'png', label: 'PNG Image', icon: '🖼️', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' }
+    ],
     tags: ['Interview', 'System Design', 'Cheatsheet'],
     featured: true
   },
@@ -69,7 +93,10 @@ const downloads: DownloadItem[] = [
     fileSize: '580 KB',
     downloads: 3200,
     icon: Terminal,
-    downloadUrl: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs',
+    formats: [
+      { format: 'pdf', label: 'PDF Document', icon: '📄', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'md', label: 'Markdown', icon: '📑', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' }
+    ],
     tags: ['Git', 'Reference', 'Commands']
   },
   {
@@ -80,7 +107,10 @@ const downloads: DownloadItem[] = [
     fileSize: '890 KB',
     downloads: 4100,
     icon: FileCode,
-    downloadUrl: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs',
+    formats: [
+      { format: 'pdf', label: 'PDF Document', icon: '📄', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'epub', label: 'EPUB eBook', icon: '📚', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' }
+    ],
     tags: ['React', 'Best Practices', 'Guide']
   },
 
@@ -93,7 +123,11 @@ const downloads: DownloadItem[] = [
     fileSize: '25 MB',
     downloads: 8900,
     icon: Palette,
-    downloadUrl: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs',
+    formats: [
+      { format: 'zip', label: 'ZIP Archive (All)', icon: '📦', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'png', label: 'PNG (4K)', icon: '🖼️', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'jpg', label: 'JPG (Compressed)', icon: '📷', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' }
+    ],
     tags: ['Wallpaper', '4K', 'Desktop'],
     featured: true
   },
@@ -105,7 +139,11 @@ const downloads: DownloadItem[] = [
     fileSize: '5.5 MB',
     downloads: 3400,
     icon: Image,
-    downloadUrl: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs',
+    formats: [
+      { format: 'svg', label: 'SVG (Vector)', icon: '✨', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'png', label: 'PNG (Raster)', icon: '🖼️', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'zip', label: 'ZIP (All Formats)', icon: '📦', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' }
+    ],
     tags: ['Icons', 'SVG', 'Design']
   },
   {
@@ -116,7 +154,11 @@ const downloads: DownloadItem[] = [
     fileSize: '12 MB',
     downloads: 2100,
     icon: Layout,
-    downloadUrl: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs',
+    formats: [
+      { format: 'canva', label: 'Canva Template', icon: '🎨', url: 'https://www.canva.com/templates' },
+      { format: 'psd', label: 'Photoshop PSD', icon: '🖌️', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'figma', label: 'Figma File', icon: '🔷', url: 'https://www.figma.com/community' }
+    ],
     tags: ['Social Media', 'Templates', 'Banners']
   },
 
@@ -129,7 +171,11 @@ const downloads: DownloadItem[] = [
     fileSize: '2.1 MB',
     downloads: 6700,
     icon: Code,
-    downloadUrl: 'https://github.com/nitijkumar424-arch/nexusai/archive/refs/heads/main.zip',
+    formats: [
+      { format: 'zip', label: 'ZIP Download', icon: '📦', url: 'https://github.com/nitijkumar424-arch/nexusai/archive/refs/heads/main.zip' },
+      { format: 'github', label: 'GitHub Clone', icon: '🐙', url: 'https://github.com/nitijkumar424-arch/nexusai' },
+      { format: 'stackblitz', label: 'Open in StackBlitz', icon: '⚡', url: 'https://stackblitz.com/github/nitijkumar424-arch/nexusai' }
+    ],
     tags: ['Next.js', 'TypeScript', 'Starter'],
     featured: true
   },
@@ -141,7 +187,11 @@ const downloads: DownloadItem[] = [
     fileSize: '1.5 MB',
     downloads: 4200,
     icon: Package,
-    downloadUrl: 'https://github.com/nitijkumar424-arch/nexusai/archive/refs/heads/main.zip',
+    formats: [
+      { format: 'npm', label: 'NPM Package', icon: '📦', url: 'https://www.npmjs.com' },
+      { format: 'zip', label: 'ZIP Download', icon: '🗂️', url: 'https://github.com/nitijkumar424-arch/nexusai/archive/refs/heads/main.zip' },
+      { format: 'github', label: 'GitHub Repo', icon: '🐙', url: 'https://github.com/nitijkumar424-arch/nexusai' }
+    ],
     tags: ['React', 'Components', 'Library']
   },
   {
@@ -152,7 +202,10 @@ const downloads: DownloadItem[] = [
     fileSize: '890 KB',
     downloads: 3800,
     icon: Terminal,
-    downloadUrl: 'https://github.com/nitijkumar424-arch/nexusai/archive/refs/heads/main.zip',
+    formats: [
+      { format: 'zip', label: 'ZIP Download', icon: '📦', url: 'https://github.com/nitijkumar424-arch/nexusai/archive/refs/heads/main.zip' },
+      { format: 'github', label: 'GitHub Clone', icon: '🐙', url: 'https://github.com/nitijkumar424-arch/nexusai' }
+    ],
     tags: ['Node.js', 'API', 'Boilerplate']
   },
   {
@@ -163,7 +216,10 @@ const downloads: DownloadItem[] = [
     fileSize: '45 KB',
     downloads: 5500,
     icon: FileCode,
-    downloadUrl: 'https://github.com/nitijkumar424-arch/nexusai/archive/refs/heads/main.zip',
+    formats: [
+      { format: 'json', label: 'JSON Settings', icon: '⚙️', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'gist', label: 'GitHub Gist', icon: '📋', url: 'https://gist.github.com' }
+    ],
     tags: ['VS Code', 'Config', 'Extensions']
   },
 
@@ -176,7 +232,11 @@ const downloads: DownloadItem[] = [
     fileSize: '3.2 MB',
     downloads: 7200,
     icon: Smartphone,
-    downloadUrl: 'https://github.com/nitijkumar424-arch/nexusai/archive/refs/heads/main.zip',
+    formats: [
+      { format: 'zip', label: 'ZIP Download', icon: '📦', url: 'https://github.com/nitijkumar424-arch/nexusai/archive/refs/heads/main.zip' },
+      { format: 'vercel', label: 'Deploy to Vercel', icon: '▲', url: 'https://vercel.com/new' },
+      { format: 'netlify', label: 'Deploy to Netlify', icon: '🌐', url: 'https://app.netlify.com/start' }
+    ],
     tags: ['Portfolio', 'Template', 'Website'],
     featured: true
   },
@@ -188,7 +248,10 @@ const downloads: DownloadItem[] = [
     fileSize: '1.8 MB',
     downloads: 4600,
     icon: Layout,
-    downloadUrl: 'https://github.com/nitijkumar424-arch/nexusai/archive/refs/heads/main.zip',
+    formats: [
+      { format: 'notion', label: 'Duplicate to Notion', icon: '📓', url: 'https://www.notion.so/templates' },
+      { format: 'pdf', label: 'PDF Guide', icon: '📄', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' }
+    ],
     tags: ['Notion', 'Productivity', 'Template']
   },
   {
@@ -199,7 +262,11 @@ const downloads: DownloadItem[] = [
     fileSize: '320 KB',
     downloads: 3100,
     icon: FileText,
-    downloadUrl: 'https://github.com/nitijkumar424-arch/nexusai/archive/refs/heads/main.zip',
+    formats: [
+      { format: 'sheets', label: 'Google Sheets', icon: '📊', url: 'https://docs.google.com/spreadsheets' },
+      { format: 'xlsx', label: 'Excel File', icon: '📗', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' },
+      { format: 'csv', label: 'CSV File', icon: '📋', url: 'https://drive.google.com/uc?export=download&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs' }
+    ],
     tags: ['Interview', 'Tracker', 'Spreadsheet']
   }
 ];
@@ -235,7 +302,138 @@ const categoryConfig = {
   }
 };
 
-function DownloadCard({ item }: { item: DownloadItem }) {
+function DownloadDialog({ 
+  item, 
+  open, 
+  onClose 
+}: { 
+  item: DownloadItem | null; 
+  open: boolean; 
+  onClose: () => void;
+}) {
+  const [selectedFormat, setSelectedFormat] = useState<FormatOption | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  if (!item) return null;
+
+  const config = categoryConfig[item.category];
+
+  const handleCopyLink = (url: string) => {
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownload = (format: FormatOption) => {
+    setSelectedFormat(format);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Download className="h-5 w-5 text-primary" />
+            Download {item.name}
+          </DialogTitle>
+          <DialogDescription>
+            Choose your preferred format to download
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 py-4">
+          {/* Format Selection */}
+          {!selectedFormat ? (
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground">Select Format:</p>
+              <div className="grid gap-2">
+                {item.formats.map((format) => (
+                  <button
+                    key={format.format}
+                    onClick={() => handleDownload(format)}
+                    className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all text-left group"
+                  >
+                    <span className="text-2xl">{format.icon}</span>
+                    <div className="flex-1">
+                      <p className="font-medium group-hover:text-primary transition-colors">
+                        {format.label}
+                      </p>
+                      <p className="text-xs text-muted-foreground uppercase">
+                        .{format.format}
+                      </p>
+                    </div>
+                    <Download className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            /* Download Link Display */
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 p-2 bg-green-500/10 rounded-lg text-green-600">
+                <Check className="h-4 w-4" />
+                <span className="text-sm font-medium">Format selected: {selectedFormat.label}</span>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-sm font-medium">Download Link:</p>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={selectedFormat.url}
+                    readOnly
+                    className="flex-1 px-3 py-2 text-sm bg-muted rounded-lg border border-border truncate"
+                  />
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleCopyLink(selectedFormat.url)}
+                  >
+                    {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                  </Button>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setSelectedFormat(null)}
+                >
+                  Choose Different Format
+                </Button>
+                <a
+                  href={selectedFormat.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1"
+                >
+                  <Button className="w-full gap-2">
+                    <ExternalLink className="h-4 w-4" />
+                    Open Link
+                  </Button>
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center justify-between text-xs text-muted-foreground border-t pt-4">
+          <span>File size: {item.fileSize}</span>
+          <span>{item.downloads.toLocaleString()} downloads</span>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function DownloadCard({ 
+  item, 
+  onDownload 
+}: { 
+  item: DownloadItem;
+  onDownload: (item: DownloadItem) => void;
+}) {
   const config = categoryConfig[item.category];
   const Icon = item.icon;
 
@@ -285,28 +483,37 @@ function DownloadCard({ item }: { item: DownloadItem }) {
             <Download className="h-3 w-3" />
             {item.downloads.toLocaleString()} downloads
           </span>
-          <span>{item.fileSize}</span>
+          <span>{item.formats.length} formats</span>
         </div>
 
-        <a
-          href={item.downloadUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block"
+        <Button 
+          className="w-full gap-2 group-hover:bg-primary"
+          onClick={() => onDownload(item)}
         >
-          <Button className="w-full gap-2 group-hover:bg-primary">
-            <Download className="h-4 w-4" />
-            Download Free
-          </Button>
-        </a>
+          <Download className="h-4 w-4" />
+          Download Free
+        </Button>
       </div>
     </motion.div>
   );
 }
 
 export default function DownloadsPage() {
+  const [selectedItem, setSelectedItem] = useState<DownloadItem | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const featuredDownloads = downloads.filter(d => d.featured);
   const categories = ['pdf', 'image', 'code', 'digital'] as const;
+
+  const handleDownload = (item: DownloadItem) => {
+    setSelectedItem(item);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setSelectedItem(null);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -346,7 +553,7 @@ export default function DownloadsPage() {
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             A collection of free resources including templates, guides, code snippets, and design assets 
-            to help you build amazing projects.
+            to help you build amazing projects. Choose your preferred format!
           </p>
         </motion.div>
 
@@ -389,7 +596,7 @@ export default function DownloadsPage() {
         </motion.div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {featuredDownloads.map((item) => (
-            <DownloadCard key={item.id} item={item} />
+            <DownloadCard key={item.id} item={item} onDownload={handleDownload} />
           ))}
         </div>
       </section>
@@ -420,7 +627,7 @@ export default function DownloadsPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {categoryItems.map((item) => (
-                  <DownloadCard key={item.id} item={item} />
+                  <DownloadCard key={item.id} item={item} onDownload={handleDownload} />
                 ))}
               </div>
             </motion.div>
@@ -437,6 +644,13 @@ export default function DownloadsPage() {
           Made with ❤️ by <a href="https://github.com/nitijkumar424-arch" className="text-primary hover:underline">Nitij Kumar</a>
         </p>
       </footer>
+
+      {/* Download Dialog */}
+      <DownloadDialog 
+        item={selectedItem} 
+        open={dialogOpen} 
+        onClose={handleCloseDialog} 
+      />
     </div>
   );
 }
