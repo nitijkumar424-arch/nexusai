@@ -11,7 +11,8 @@ import {
   Search,
   Sparkles,
   Clock,
-  ShoppingBag
+  ShoppingBag,
+  Download
 } from 'lucide-react';
 import { format, isToday, isYesterday, isThisWeek, isThisMonth } from 'date-fns';
 import Link from 'next/link';
@@ -199,6 +200,15 @@ export function Sidebar({ onOpenSettings }: SidebarProps) {
 
         {/* Footer */}
         <div className="p-3 border-t space-y-1">
+          <Link href="/downloads">
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-2"
+            >
+              <Download className="h-4 w-4" />
+              Downloads
+            </Button>
+          </Link>
           <Link href="/recommendations">
             <Button
               variant="ghost"
