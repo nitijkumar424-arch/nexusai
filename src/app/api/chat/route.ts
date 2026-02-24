@@ -4,7 +4,44 @@ import { NextRequest } from 'next/server';
 const PRODUCT_KNOWLEDGE = `
 ## YOUR PRODUCT DATABASE - USE THESE EXACT LINKS
 
-When users ask about products, laptops, books, courses, headphones, keyboards, or any buying recommendations, YOU MUST provide these exact products with clickable markdown links.
+When users ask about ANY products, YOU MUST provide these exact products with clickable markdown links.
+
+### SMARTPHONES
+1. **iPhone 15 Pro Max** - Best iPhone with A17 Pro chip, titanium design - ₹1,59,900
+   [Buy on Amazon](https://www.amazon.in/dp/B0CHX2F5QT)
+
+2. **iPhone 15** - Great iPhone for most people - ₹79,900
+   [Buy on Amazon](https://www.amazon.in/dp/B0CHX1W1XY)
+
+3. **Samsung Galaxy S24 Ultra** - Best Android phone with S Pen - ₹1,29,999
+   [Buy on Amazon](https://www.amazon.in/dp/B0CS5X8HPJ)
+
+4. **Samsung Galaxy S24** - Compact flagship Android - ₹74,999
+   [Buy on Amazon](https://www.amazon.in/dp/B0CS5TRSRM)
+
+5. **OnePlus 12** - Flagship killer with great value - ₹64,999
+   [Buy on Amazon](https://www.amazon.in/dp/B0CRZ4RGKC)
+
+6. **Google Pixel 8 Pro** - Best camera phone - ₹1,06,999
+   [Buy on Amazon](https://www.amazon.in/dp/B0CGTJ12Z9)
+
+7. **Google Pixel 8** - Pure Android experience - ₹75,999
+   [Buy on Amazon](https://www.amazon.in/dp/B0CGT7YQL6)
+
+8. **Nothing Phone 2** - Unique design with Glyph interface - ₹44,999
+   [Buy on Amazon](https://www.amazon.in/dp/B0C7JBJ65K)
+
+9. **OnePlus Nord CE4** - Best mid-range phone - ₹24,999
+   [Buy on Amazon](https://www.amazon.in/dp/B0CZ2PCHL6)
+
+10. **Samsung Galaxy A54** - Best budget Samsung - ₹32,999
+    [Buy on Amazon](https://www.amazon.in/dp/B0BZC5WGKF)
+
+11. **Redmi Note 13 Pro+** - Best budget phone - ₹29,999
+    [Buy on Amazon](https://www.amazon.in/dp/B0CR2DBCHQ)
+
+12. **iPhone SE 3** - Budget iPhone - ₹49,900
+    [Buy on Amazon](https://www.amazon.in/dp/B09V4LBJLV)
 
 ### LAPTOPS & COMPUTERS
 1. **MacBook Air M3** - Best for developers, incredible performance - ₹1,14,900
@@ -12,6 +49,32 @@ When users ask about products, laptops, books, courses, headphones, keyboards, o
 
 2. **Dell XPS 15** - Windows alternative with great display - ₹1,49,990
    [Buy on Amazon](https://www.amazon.in/dp/B0BXKJ2XJ4)
+
+3. **HP Pavilion** - Budget laptop for students - ₹55,990
+   [Buy on Amazon](https://www.amazon.in/dp/B0BSHC9MRX)
+
+4. **ASUS ROG Strix** - Gaming laptop - ₹1,04,990
+   [Buy on Amazon](https://www.amazon.in/dp/B0BSHHL4VB)
+
+### TABLETS
+1. **iPad Pro M4** - Best tablet for professionals - ₹99,900
+   [Buy on Amazon](https://www.amazon.in/dp/B0D3J5QGJT)
+
+2. **iPad Air M2** - Best iPad for most people - ₹69,900
+   [Buy on Amazon](https://www.amazon.in/dp/B0D3J617D2)
+
+3. **Samsung Galaxy Tab S9** - Best Android tablet - ₹87,999
+   [Buy on Amazon](https://www.amazon.in/dp/B0CCZK7WXW)
+
+### SMARTWATCHES
+1. **Apple Watch Series 9** - Best smartwatch for iPhone - ₹41,900
+   [Buy on Amazon](https://www.amazon.in/dp/B0CHXCW9Y8)
+
+2. **Apple Watch Ultra 2** - Best for fitness - ₹89,900
+   [Buy on Amazon](https://www.amazon.in/dp/B0CHXD3RKP)
+
+3. **Samsung Galaxy Watch 6** - Best for Android - ₹28,999
+   [Buy on Amazon](https://www.amazon.in/dp/B0C7927KNT)
 
 ### MICE & KEYBOARDS
 1. **Logitech MX Master 3S** - Premium wireless mouse - ₹9,495
@@ -30,12 +93,28 @@ When users ask about products, laptops, books, courses, headphones, keyboards, o
 3. **Sony WF-1000XM5** - Premium earbuds - ₹19,990
    [Buy on Amazon](https://www.amazon.in/dp/B0C4TMHJPK)
 
+4. **Samsung Galaxy Buds 2 Pro** - Best for Samsung phones - ₹14,999
+   [Buy on Amazon](https://www.amazon.in/dp/B0B8QSPDQR)
+
+5. **boAt Airdopes 141** - Budget earbuds - ₹1,299
+   [Buy on Amazon](https://www.amazon.in/dp/B09N3ZNHTY)
+
 ### MONITORS
 1. **Samsung 27" 4K Monitor** - Great for coding - ₹27,999
    [Buy on Amazon](https://www.amazon.in/dp/B09TPL5FZT)
 
 2. **LG 27" UltraGear Gaming Monitor** - For gaming - ₹21,999
    [Buy on Amazon](https://www.amazon.in/dp/B08XN5XPDH)
+
+### CAMERAS
+1. **Sony A7 IV** - Best mirrorless camera - ₹2,42,990
+   [Buy on Amazon](https://www.amazon.in/dp/B09JZTHCB2)
+
+2. **Canon EOS R6 Mark II** - Great for video - ₹2,15,995
+   [Buy on Amazon](https://www.amazon.in/dp/B0BLGR1DF7)
+
+3. **GoPro Hero 12** - Best action camera - ₹44,990
+   [Buy on Amazon](https://www.amazon.in/dp/B0CFTQ5MR8)
 
 ### PROGRAMMING BOOKS
 1. **Clean Code** by Robert C. Martin - Must read for developers - ₹2,499
