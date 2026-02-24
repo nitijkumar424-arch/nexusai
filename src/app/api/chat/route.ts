@@ -1,5 +1,42 @@
 import { NextRequest } from 'next/server';
 
+// Product knowledge base for recommendations
+const PRODUCT_KNOWLEDGE = `
+You have access to these product recommendations with real Amazon/Udemy links. When users ask for product recommendations, suggest these with their actual links:
+
+## Tech & Gadgets
+- **MacBook Air M3** - Best laptop for developers (₹1,14,900) - https://www.amazon.in/dp/B0CX22ZW1T
+- **Logitech MX Master 3S** - Premium wireless mouse (₹9,495) - https://www.amazon.in/dp/B09HM94VDS
+- **Sony WH-1000XM5** - Noise cancelling headphones (₹26,990) - https://www.amazon.in/dp/B09XS7JWHH
+- **Samsung 27" 4K Monitor** - Great for coding (₹27,999) - https://www.amazon.in/dp/B09TPL5FZT
+- **Keychron K2 Keyboard** - Mechanical keyboard (₹7,999) - https://www.amazon.in/dp/B08B5WHYTT
+- **Apple AirPods Pro 2** - Best wireless earbuds (₹24,900) - https://www.amazon.in/dp/B0BDKD8DVD
+- **Anker USB-C Hub** - 7-in-1 hub (₹4,999) - https://www.amazon.in/dp/B07ZVKTP53
+
+## Books for Developers
+- **Clean Code** by Robert Martin (₹2,499) - https://www.amazon.in/dp/0132350882
+- **System Design Interview** by Alex Xu (₹1,999) - https://www.amazon.in/dp/B08CMF2CQF
+- **Designing Data-Intensive Applications** (₹4,299) - https://www.amazon.in/dp/9352135245
+- **Atomic Habits** by James Clear (₹499) - https://www.amazon.in/dp/1847941834
+- **The Pragmatic Programmer** (₹2,850) - https://www.amazon.in/dp/0135957052
+- **Cracking the Coding Interview** (₹599) - https://www.amazon.in/dp/0984782850
+
+## Online Courses
+- **Complete Web Developer Course** on Udemy (₹449) - https://www.udemy.com/course/the-complete-web-developer-zero-to-mastery/
+- **Machine Learning by Andrew Ng** on Coursera (Free) - https://www.coursera.org/learn/machine-learning
+- **React - The Complete Guide** on Udemy (₹449) - https://www.udemy.com/course/react-the-complete-guide-incl-redux/
+- **DSA for Coding Interviews** on Udemy (₹499) - https://www.udemy.com/course/master-the-coding-interview-data-structures-algorithms/
+- **AWS Solutions Architect** on Udemy (₹449) - https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/
+- **Python Bootcamp** on Udemy (₹449) - https://www.udemy.com/course/complete-python-bootcamp/
+
+## Workspace Setup
+- **Green Soul Jupiter Chair** - Ergonomic office chair (₹19,999) - https://www.amazon.in/dp/B07KT1TFPF
+- **BenQ ScreenBar** - Monitor light bar (₹8,500) - https://www.amazon.in/dp/B076VNFZJG
+- **Laptop Stand** - Twelve South BookArc (₹5,999) - https://www.amazon.in/dp/B086RWK8Y5
+
+Always provide the actual links when recommending products. Format recommendations nicely with product name, brief description, price, and clickable link.
+`;
+
 export async function POST(req: NextRequest) {
   try {
     const { messages, model, provider, systemPrompt } = await req.json();
@@ -47,9 +84,14 @@ export async function POST(req: NextRequest) {
 
     const chatMessages = [];
     
-    if (systemPrompt) {
-      chatMessages.push({ role: 'system', content: systemPrompt });
-    }
+    // Build enhanced system prompt with product knowledge
+    const enhancedSystemPrompt = `${systemPrompt || 'You are a helpful AI assistant.'}
+
+${PRODUCT_KNOWLEDGE}
+
+Important: When users ask for product recommendations, buying links, suggestions for laptops, books, courses, headphones, or any products - always provide the actual Amazon/Udemy links from your knowledge base above. Be helpful and provide real, working links.`;
+    
+    chatMessages.push({ role: 'system', content: enhancedSystemPrompt });
 
     for (const msg of messages) {
       chatMessages.push({
