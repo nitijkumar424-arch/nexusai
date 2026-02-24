@@ -226,8 +226,26 @@ export async function POST(req: NextRequest) {
 
     const chatMessages = [];
     
-    // Build enhanced system prompt with product knowledge
+    // User profile information
+    const USER_PROFILE = `
+## ABOUT THE USER YOU ARE TALKING TO:
+- **Name**: Nitij Kumar
+- **Education**: B.Tech Computer Science - Final Year Student
+- **Role**: Full Stack Developer & AI Enthusiast
+- **Skills**: React, Next.js, TypeScript, Node.js, Python, AI/ML
+- **Current Project**: NEXUS AI (this chat application you are part of!)
+- **Location**: India
+- **Email**: nitijkumar424@gmail.com
+- **GitHub**: github.com/nitijkumar424-arch
+
+When user asks about themselves, their name, who they are, or personal questions - use this information.
+Address them as "Nitij" when appropriate. Remember they created this NEXUS AI application.
+`;
+    
+    // Build enhanced system prompt with product knowledge and user profile
     const enhancedSystemPrompt = `${systemPrompt || 'You are a helpful AI assistant.'}
+
+${USER_PROFILE}
 
 ${PRODUCT_KNOWLEDGE}
 
