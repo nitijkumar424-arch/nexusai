@@ -124,7 +124,15 @@ export function ChatContainer({ onToggleSidebar }: ChatContainerProps) {
 
       // Add search context to the message if we have sources
       let finalContent = content;
-      if (sources.length > 0) {
+      
+      // Check if this is a product query - if so, tell AI to use product database
+      const productKeywords = ['buy', 'recommend', 'suggest', 'best', 'price', 'purchase', 'smartphone', 'phone', 'laptop', 'headphone', 'earbuds', 'book', 'course', 'watch', 'tablet', 'camera', 'monitor', 'keyboard', 'mouse', 'chair', 'under', 'budget', 'amazon', 'flipkart'];
+      const isProductQuery = productKeywords.some(keyword => content.toLowerCase().includes(keyword));
+      
+      if (isProductQuery) {
+        // For product queries, prioritize the product database
+        finalContent = `${content}\n\nIMPORTANT: Use the product links from your database. Provide actual Amazon/Udemy buy links in markdown format like [Buy on Amazon](url). Include price and description.`;
+      } else if (sources.length > 0) {
         const searchContext = sources.map(s => `[${s.title}](${s.url}): ${s.snippet}`).join('\n\n');
         finalContent = `Based on the following web search results:\n\n${searchContext}\n\nUser question: ${content}\n\nProvide a comprehensive answer with citations to the sources.`;
       }
