@@ -13,7 +13,8 @@ import {
   Clock,
   ShoppingBag,
   Download,
-  Wand2
+  Wand2,
+  BarChart3
 } from 'lucide-react';
 import { format, isToday, isYesterday, isThisWeek, isThisMonth } from 'date-fns';
 import Link from 'next/link';
@@ -208,6 +209,15 @@ export function Sidebar({ onOpenSettings }: SidebarProps) {
             >
               <Wand2 className="h-4 w-4" />
               Create
+            </Button>
+          </Link>
+          <Link href="/analytics">
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-2"
+            >
+              <BarChart3 className="h-4 w-4" />
+              Analytics
             </Button>
           </Link>
           <Link href="/downloads">
